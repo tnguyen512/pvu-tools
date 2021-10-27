@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+  .w3-button {
+    width: 150px;
+  }
+
+  .active {
+    border: 2px solid green;
+  }
+
+  .item {
+    border-radius: 4px;
+    padding: 4px;
+    width: 84px;
+  }
+</style>
+
+<body>
+
+  <h2>Filter the best price of PVU Plant</h2>
+
+  <p id="pvu-price"></p>
+  <button class="w3-button w3-green" onclick="loadPrice(0)">Common</button>
+  <button class="w3-button w3-blue" onclick="loadPrice(1)">Uncommon</button>
+  <button class="w3-button w3-red" onclick="loadPrice(2)">Rare</button>
+  <button class="w3-button w3-purple" onclick="loadPrice(3)">Mythic</button>
+
+  <div style="margin-top: 30px;">
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" name="quantity">
+  </div>
+
+  <divdata-v-4aa513cc="">
+    <p class="tw-mb-5 tw-mt-5 type__text">Type</p>
+    <div class="tw-grid tw-gap-2 tw-grid-cols-3">
+      <div id="dark" onclick="addElement(this.id)" class="item tw-text-center tw-cursor-pointer tw-relative"><img
+          elementValue="" src="https://marketplace.plantvsundead.com/_nuxt/img/dark.d661f0f.svg" alt=""
+          class="tw-w-full tw-h-auto">
+        <!---->
+      </div>
+      <div id="electro" onclick="addElement(this.id)" class="item tw-text-center tw-cursor-pointer tw-relative"><img
+          elementValue="" src="https://marketplace.plantvsundead.com/_nuxt/img/electric.0da5192.svg" alt=""
+          class="tw-w-full tw-h-auto">
+        <!---->
+      </div>
+      <div id="fire" onclick="addElement(this.id)" class="item tw-text-center tw-cursor-pointer tw-relative"><img
+          elementValue="" src="https://marketplace.plantvsundead.com/_nuxt/img/fire.c6c0671.svg" alt=""
+          class="tw-w-full tw-h-auto">
+        <!---->
+      </div>
+      <div id="ice" onclick="addElement(this.id)" class="item tw-text-center tw-cursor-pointer tw-relative"><img
+          elementValue="" src="https://marketplace.plantvsundead.com/_nuxt/img/ice.e1484b7.svg" alt=""
+          class="tw-w-full tw-h-auto">
+        <!---->
+      </div>
+      <div id="light" onclick="addElement(this.id)" class="item tw-text-center tw-cursor-pointer tw-relative"><img
+          elementValue="" src="https://marketplace.plantvsundead.com/_nuxt/img/light.b026314.svg" alt=""
+          class="tw-w-full tw-h-auto">
+        <!---->
+      </div>
+      <div id="parasite" onclick="addElement(this.id)" class="item tw-text-center tw-cursor-pointer tw-relative"><img
+          elementValue="" src="https://marketplace.plantvsundead.com/_nuxt/img/para.1836eab.svg" alt=""
+          class="tw-w-full tw-h-auto">
+        <!---->
+      </div>
+      <div id="metal" onclick="addElement(this.id)" class="item tw-text-center tw-cursor-pointer tw-relative"><img
+          elementValue="" src="https://marketplace.plantvsundead.com/_nuxt/img/void.5cc4954.svg" alt=""
+          class="tw-w-full tw-h-auto">
+        <!---->
+      </div>
+      <div id="water" onclick="addElement(this.id)" class="item tw-text-center tw-cursor-pointer tw-relative"><img
+          elementValue="" src="https://marketplace.plantvsundead.com/_nuxt/img/water.a8971f4.svg" alt=""
+          class="tw-w-full tw-h-auto">
+        <!---->
+      </div>
+      <div id="wind" onclick="addElement(this.id)" class="item tw-text-center tw-cursor-pointer tw-relative"><img
+          elementValue="" src="https://marketplace.plantvsundead.com/_nuxt/img/wind.8751797.svg" alt=""
+          class="tw-w-full tw-h-auto">
+        <!---->
+      </div>
+    </div>
+    </div>
+
+    <script>
+      var elements = [];
+
+      $(document).ready(function () {
+        addElement('light');
+        $("#quantity").val(100);
+      });
+
+      function addElement(element) {
+        var thisElement = $("#" + element);
+        if (!thisElement.hasClass("active")) {
+          thisElement.addClass('active');
+          elements.push(element);
+        } else {
+          thisElement.removeClass('active');
+          for (var i = elements.length - 1; i >= 0; i--) {
+            if (elements[i] === element) {
+              elements.splice(i, 1);
+            }
+          }
+        }
+      }
+
+      function getFields(input, field) {
+        var output = [];
+        for (var i = 0; i < input.length; ++i)
+          output.push(input[i][field]);
+        return output;
+      }
+
+      function loadPrice(rarities) {
+        console.log("================");
+        var quantity = $("#quantity").val();
+        var idList = [];
+        (async () => {
+          let response = await new Promise(resolve => {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://backend-farm.plantvsundead.com/get-plants-filter-v2?offset=1&limit=" + quantity + "&type=1&sort=lowestPrice&rarities=" + rarities + "&elements=" + this.elements, true);
+            xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwdWJsaWNBZGRyZXNzIjoiMHhkM2U2MWNjZGRkZGFjM2E5YWIzZDYyZTBjMGEyZTNhMDdmYWExMmNiIiwibG9naW5UaW1lIjoxNjM0MTA3OTU1NDQxLCJjcmVhdGVEYXRlIjoiMjAyMS0wOS0yOSAxMDoyNDo1MCIsImlhdCI6MTYzNDEwNzk1NX0.vMRAnInKkA5GM8RTMIXWu5wxkKmI5XyE92NnmLEBn2I");
+            xhr.onload = function () {
+              resolve(xhr.response);
+            };
+            xhr.send();
+          });
+          let objArray = JSON.parse(response).data;
+          idList = getFields(objArray, "id");
+          for (var i = 0; i < idList.length; i++) {
+            getPlantPrice(idList[i]);
+          }
+        })();
+      }
+
+      function getPlantPrice(plantId) {
+        (async () => {
+          let response = await new Promise(resolve => {
+            var xhr2 = new XMLHttpRequest();
+            xhr2.open("GET", "https://backend-farm.plantvsundead.com/get-plant-detail-v2?plantId=" + plantId, true);
+            xhr2.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwdWJsaWNBZGRyZXNzIjoiMHhkM2U2MWNjZGRkZGFjM2E5YWIzZDYyZTBjMGEyZTNhMDdmYWExMmNiIiwibG9naW5UaW1lIjoxNjM0MTA3OTU1NDQxLCJjcmVhdGVEYXRlIjoiMjAyMS0wOS0yOSAxMDoyNDo1MCIsImlhdCI6MTYzNDEwNzk1NX0.vMRAnInKkA5GM8RTMIXWu5wxkKmI5XyE92NnmLEBn2I");
+            xhr2.onload = function () {
+              resolve(xhr2.response);
+            };
+            xhr2.send();
+          });
+          let data = JSON.parse(response).data;
+          if (data && data.endingPrice) {
+            let plantPrice = data.endingPrice;
+            let type = data.plant.stats.type;
+            const output = type + ":" + plantId + "-" + plantPrice
+            console.log(output);
+          }
+        })();
+      }
+
+    </script>
+</body>
+
+</html>
